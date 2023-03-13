@@ -32,13 +32,22 @@ export default async function handler(
         const talker: any = message.talker()
         const text = message.text()
         const room = message.room()
-        if (room) {
-          const topic = await room.topic()
-          console.log(`Room: ${topic} Contact: ${talker.name()} Text: ${text}`)
-        } else {
-          console.log(`Contact: ${talker.name()} Text: ${text}`)
+        //if (room) {
+          //const topic = await room.topic()
+          //console.log(`Room: ${topic} Contact: ${talker.name()} Text: ${text}`)
+        //} else {
+          //console.log(`Contact: ${talker.name()} Text: ${text}`)
+        //}
+        const permitGroupName = 'robot'
+        if (room && (await room.topic()) === permitGroupName && text) {
+          await fetchSSE(openai, [{ role: 'user', content: text }], async function onMessage(data: any) {
+            const reply = data.choices[0].message.content
+            reply && await message.say(reply.trim())
+          }, false)
+          return
         }
         let reResult = /\/gpt\s+(.+)\s*$/.exec(text??'')
+        // message.self():  message.talker() == message.wechaty.userSelf()
         if (reResult) {
           console.log('ping', reResult[1])
           const messages = [
