@@ -38,6 +38,7 @@ export default async function handler(
         //} else {
           //console.log(`Contact: ${talker.name()} Text: ${text}`)
         //}
+        console.log(`talker: ${talker.name()} Text: ${text}`)
         const permitGroupName = 'robot'
         if (room && (await room.topic()) == permitGroupName && text) {
           console.log(`in ${permitGroupName} room`)
