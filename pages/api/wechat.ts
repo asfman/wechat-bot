@@ -41,7 +41,6 @@ export default async function handler(
         let reResult = /\/gpt\s+(.+)\s*$/.exec(text??'')
         if (reResult) {
           console.log('ping', reResult[1])
-          const currentDate = new Date().toISOString().split('T')[0]
           const messages = [
             { role: 'user', content: reResult[1] }
           ]
