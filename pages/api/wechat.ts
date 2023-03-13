@@ -39,8 +39,10 @@ export default async function handler(
           //console.log(`Contact: ${talker.name()} Text: ${text}`)
         //}
         const permitGroupName = 'robot'
-        if (room && (await room.topic()) === permitGroupName && text) {
+        if (room && (await room.topic()) == permitGroupName && text) {
+          console.log(`in ${permitGroupName} room`)
           await fetchSSE(openai, [{ role: 'user', content: text }], async function onMessage(data: any) {
+            console.log(JSON.stringify(data))
             const reply = data.choices[0].message.content
             reply && await message.say(reply.trim())
           }, false)
